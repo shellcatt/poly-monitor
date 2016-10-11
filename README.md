@@ -1,8 +1,8 @@
 ## Building blocks
 ---
-> *[Polymer] is built on top of a set of powerful new web platform primitives called __Web Components__. 
-> Web Components bring unprecedented composability, interoperability, and consumability to the web platform. 
-> Polymer is a pioneering javascript library that's currently in __“developer preview”__. 
+> *[Polymer] is built on top of a set of powerful new web platform primitives called __Web Components__.
+> Web Components bring unprecedented composability, interoperability, and consumability to the web platform.
+> Polymer is a pioneering javascript library that's currently in __“developer preview”__.
 > However, despite the label many people have already had success using Polymer in production.*
 
 ---
@@ -48,24 +48,29 @@ sh install.sh
 ```sh
 node server.js 9080
 ```
-> * __Note__ that the *port* is passed as a command line parameter for configurability.
+> * __Note__ that the *port* is passed as a command line parameter for configurability. You can hardcode it directly in `package.json` as I've done already in order to only use `npm start`.
 
-After you've ran the server, you should be able to open 
-> [localnodejs]
+After you've ran the server, you should be able to open
+> [http://localhost:9080/](http://localhost:9080/)
 
-and see some of the output from [xrandr] as plain-text JSON.
+> ![alt tag](https://raw.githubusercontent.com/shellcatt/poly-monitor/master/screenshot.jpg)
 
-To verify the connectivity between Apache and the NodeJS server, you should be able to see the same JSON result under 
+Back in teh command line you'll be able to see some of the output from [xrandr] as plain-text JSON.
+
+To verify the connectivity between Apache and the NodeJS server, you should be able to see the same JSON result under
 > `http://<your-local-vhost>/nodejs/`.
 
 ---
 Open the app
 ---
-> You can place the project folder anywhere under your document root's tree as long as you have the `ProxyPass` set on the current *vhost*. 
+> You can place the project folder anywhere under your document root's tree as long as you have the `ProxyPass` set on the current *vhost*.
 
 > For example, mine is at `http://test.localhost/poly-monitor/`.
 
-
+---
+Known Issues
+---
+- Chrome 50+ introduced some changes in their ShadowDOM implementation which won't work with the current version of *paper-elements*, rendering blank screen. An upgrade has been planned for the next season.
 ---
 
 [Polymer]:http://www.polymer-project.org/
@@ -73,4 +78,4 @@ Open the app
 [Xorg]:http://www.x.org/wiki/Projects/XRandR/
 [xrandr]:https://wiki.archlinux.org/index.php/xrandr
 [Same-origin policy]:http://en.wikipedia.org/wiki/Same-origin_policy
-[localnodejs]:[http://localhost:9080/]
+[localnodejs]:http://localhost:9080/
