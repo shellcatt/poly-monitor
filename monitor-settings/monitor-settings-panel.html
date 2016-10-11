@@ -1,0 +1,153 @@
+<link rel="import" href="../components/polymer/polymer.html">
+<link rel="import" href="../components/paper-slider/paper-slider.html">
+
+<polymer-element name="monitor-settings-panel" attributes="name brightness red green blue">
+    <template>
+        <style shim-shadowdom>
+            :host {
+                font-family: RobotoDraft, 'Helvetica Neue', Helvetica, Arial;
+                display: block;
+                border: 1px solid #ccccec;
+                background-color: #ececec;
+                padding: 1rem;
+                margin: 1rem;
+            }
+            polyfill-next-selector { content: "h1"; }
+            :host ::content h1 { margin-top: 0; text-decoration: underline; text-align: center; }
+            h1 { margin-top: 0; text-decoration: underline; text-align: center; }
+            
+            paper-slider {
+                width: 90%;
+            }
+            
+            paper-slider.yellow::shadow  #sliderKnobInner,
+            paper-slider.yellow::shadow  #sliderKnobInner::before,
+            paper-slider.yellow::shadow #sliderBar::shadow #activeProgress {
+              background-color: #f4b400;
+            }
+            paper-slider.green::shadow  #sliderKnobInner,
+            paper-slider.green::shadow  #sliderKnobInner::before,
+            paper-slider.green::shadow  #sliderBar::shadow #activeProgress {
+              background-color: #0f9d58;
+            }
+            paper-slider.red::shadow  #sliderKnobInner,
+            paper-slider.red::shadow  #sliderKnobInner::before,
+            paper-slider.red::shadow  #sliderBar::shadow #activeProgress {
+              background-color: #d14836;
+            }
+
+        </style>
+        
+        <content select="h1"></content>
+        <div>
+            <h3> Brightness </h3> 
+            <paper-slider id="brightness" class="brightness yellow" min="1" max="100" value="0" editable ppin></paper-slider>
+        </div>
+        <div>
+            <h3> Gamma </h3>
+            <div center horizontal layout>
+                <label> R </label>
+                <paper-slider id="red" class="gamma red" min="1" max="100" editable ppin></paper-slider>
+            </div>
+            <div center horizontal layout>
+                <label> G </label>
+                <paper-slider id="green" class="gamma green" min="1" max="100" editable ppin></paper-slider>
+            </div>
+            <div center horizontal layout>
+                <label> B </label>
+                <paper-slider id="blue" class="gamma blue" min="1" max="100" editable ppin></paper-slider>
+            </div>
+        </div>
+        <content></content>
+    </template>
+    
+    <script>
+
+        function y(f) {
+            return function () {
+                return f.bind(null, y(f)).apply(this, arguments);
+            };
+        }
+        Polymer('monitor-settings-panel', {
+            domReady: function() {
+                var self = this;
+                self.$.brightness.value = self.brightness * 100;
+
+                self.$.red.value = self.red * 100;
+                self.$.green.value = self.green * 100;
+                self.$.blue.value = self.blue * 100;
+
+                self.$.brightness.addEventListener('change', function (){
+                    var callee = this.constructor;
+
+                    callee.first = false;
+                    if( this.value === (self.brightness * 100) )
+                        callee.first = true;
+
+                    if( callee.first === false ) {
+                        self.brightness = this.value / 100;
+                        composeGamma(self);
+//                        self.fire('change', { name: self.name, brightness: self.brightness });
+                        self.fire('change', self);
+                    }
+                });
+                
+                self.$.red.addEventListener('change', function (){
+                    var callee = this.constructor;
+                    
+                    callee.first = false;
+                    if( this.value === (self.red * 100) )
+                        callee.first = true;
+
+                    if( callee.first === false ) {
+                        self.red = this.value / 100;
+                        composeGamma(self);
+//                        self.fire('change', { name: self.name, gamma: getGamma(self) });
+                        self.fire('change', self);
+                    }
+                });
+                
+                self.$.green.addEventListener('change', function (){
+                    var callee = this.constructor;
+
+                    callee.first = false;
+                    if( this.value === (self.green * 100) )
+                        callee.first = true;
+
+                    if( callee.first === false ) {
+                        self.green = this.value / 100;
+                        composeGamma(self);
+//                        self.fire('change', { name: self.name, gamma: getGamma(self) });
+                        self.fire('change', self);
+                    }
+                });
+                
+                self.$.blue.addEventListener('change', function (){
+                    var callee = this.constructor;
+
+                    callee.first = false;
+                    if( this.value === (self.blue * 100) )
+                        callee.first = true;
+
+                    if( callee.first === false ) {
+                        self.blue = this.value / 100;
+                        composeGamma(self);
+//                        self.fire('change', { name: self.name, gamma: getGamma(self) });
+                        self.fire('change', self);
+                    }
+                });
+                
+            }
+        });
+        
+        function getGamma(obj){
+            return obj.red + '-' + obj.green + '-' + obj.blue;
+        }
+        
+        function composeGamma(obj){
+            obj.gamma = getGamma(obj);
+        }
+        
+    </script>
+    
+</polymer-element>

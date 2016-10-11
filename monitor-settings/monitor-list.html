@@ -1,0 +1,52 @@
+<!--<link rel="import" href="../components/polymer/polymer.html">-->
+<link rel="import" href="monitor-service.html">
+<link rel="import" href="monitor-settings-panel.html">
+
+<polymer-element name="monitor-list" attributes="passURI">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+            monitor-settings-panel { width: 45%; }
+        </style>
+        
+        <monitor-service id="service" monitors="{{monitors}}" passURI="{{passURI}}">
+            <content></content>
+        </monitor-service>
+    
+        <div layout horizontal>
+            <template id="repeater" repeat="{{monitor in monitors}}">
+                <monitor-settings-panel id="{{monitor.name}}" name="{{monitor.name}}" 
+                        brightness="{{monitor.brightness}}" red="{{monitor.red}}" green="{{monitor.green}}" blue="{{monitor.blue}}"
+                        on-change="{{panelChanged}}">
+                    <h1> {{monitor.name}} </h1>
+                </monitor-settings-panel>
+            </template>
+            <content></content>
+        </div>
+    </template>
+    <script>
+        
+        Polymer('monitor-list', {
+            domReady: function() {
+                var self = this;
+                this.$.service.addEventListener('loaded', function() {
+//                    console.log(self.$.repeater.model.monitors);
+                });
+            },
+            panelChanged: function(e){
+//                console.log(e.detail);
+                this.$.service.setOutput(e.detail.name, e.detail.brightness, e.detail.gamma);
+                
+//                if( e.detail['brightness'] )
+//                    this.$.service.setBrightness(e.detail.name, e.detail['brightness']);
+//                else if( e.detail['gamma'] )
+//                    this.$.service.setGamma(e.detail.name, e.detail['gamma'] );
+                
+            }
+        });
+
+    </script>
+</polymer-element>
+

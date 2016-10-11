@@ -1,0 +1,51 @@
+<!--<link rel="import" href="../components/polymer/polymer.html">-->
+<link rel="import" href="../components/core-ajax/core-ajax.html">
+
+<polymer-element name="monitor-service" attributes="monitors passURI">
+  <template>
+    <style>
+    :host {
+      display: none;
+    }
+    </style>
+    <core-ajax id="ajax" url="{{passURI}}" auto
+        method="get"
+        on-core-response="{{monitorsLoaded}}"
+        handleAs="json">
+    </core-ajax>
+  </template>
+  <script>
+
+        Polymer('monitor-service', {
+            domReady: function() {
+//                this.$.ajax.go();
+            },
+            created: function() {
+                this.monitors = [];
+            },
+            monitorsLoaded: function(response) {
+              if( response.detail.response == 'done.' ){
+              } else {
+                  this.monitors = response.detail.response;
+              }
+              this.fire('loaded');
+            },
+            setOutput: function(name, brightness, gamma){
+//                console.log('name: ' + name + ', brightness ' + brightness+ ', gamma ' + gamma);
+                this.$.ajax.url = '/nodejs/set/'+name+'/brightness/' + brightness + '/gamma/' + gamma;
+//                this.$.ajax.go();
+            },
+            setBrightness: function(name, val){
+//                console.log('name: ' + name + ', brightness ' + val);
+                this.$.ajax.url = '/nodejs/set/'+name+'/brightness/' + val;
+//                this.$.ajax.go();
+            },
+            setGamma: function(name, val){
+//                console.log('name: ' + name + ', gamma ' + val);
+                this.$.ajax.url = '/nodejs/set/'+name+'/gamma/' + val;
+//                this.$.ajax.go();
+                
+            }
+  });
+  </script>
+</polymer-element>
